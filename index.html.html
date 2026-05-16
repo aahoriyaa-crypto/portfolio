@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayan | IT & Cloud Infrastructure Professional</title>
+    <meta name="description" content="Portfolio of Ayan, specializing in Hardware, Networking, CCNA, Cloud, and AWS.">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo"><span class="type-once" data-text="Ayan" data-delay="0"></span><span>.</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="title type-once" data-text="AYAN" data-delay="0"></h1>
+            <h3 class="typewriter">
+                <span class="typewriter-text"></span><span class="cursor">|</span>
+            </h3>
+            <p class="description type-once" data-text="Building robust, scalable, and secure infrastructures. From physical hardware to the AWS Cloud, I ensure everything connects seamlessly." data-delay="400"></p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn primary-btn box-reveal" data-delay="1500"><span class="type-once" data-text="Let's Talk" data-delay="1800"></span> <i class="fas fa-arrow-right"></i></a>
+                <a href="#skills" class="btn secondary-btn box-reveal" data-delay="1700"><span class="type-once" data-text="View Skills" data-delay="2000"></span></a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="glass-card main-card box-reveal" data-delay="2200">
+                <i class="fa-brands fa-aws aws-icon icon-reveal" data-delay="2400"></i>
+                <div class="card-text type-once" data-text="AWS Cloud" data-delay="2600"></div>
+            </div>
+            <div class="glass-card sub-card network box-reveal" data-delay="2500">
+                <i class="fa-solid fa-network-wired icon-reveal" data-delay="2700"></i>
+                <div class="card-text type-once" data-text="Networking" data-delay="2900"></div>
+            </div>
+            <div class="glass-card sub-card hardware box-reveal" data-delay="2800">
+                <i class="fa-solid fa-server icon-reveal" data-delay="3000"></i>
+                <div class="card-text type-once" data-text="Hardware" data-delay="3200"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="section-header">
+            <h2 class="section-title">About Me</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="about-content">
+            <div class="about-text hidden">
+                <p class="type-once" data-text="I am an enthusiastic IT professional with a deep passion for technology. My expertise spans across the physical layer of hardware to complex networking protocols and modern cloud architectures."></p>
+                <p class="type-once" data-text="With a strong foundation in CCNA principles, I specialize in designing, configuring, and troubleshooting networks. In the modern era, my focus extends to the cloud, specifically architecting and managing scalable solutions on AWS."></p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">Hardware</span>
+                        <span class="stat-label">Diagnostics & Setup</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">CCNA</span>
+                        <span class="stat-label">Routing & Switching</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">AWS</span>
+                        <span class="stat-label">Cloud Architect</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills section">
+        <div class="section-header">
+            <h2 class="section-title">Core Expertise</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-card hidden">
+                <div class="skill-icon"><i class="fa-solid fa-microchip"></i></div>
+                <h3>Hardware</h3>
+                <p>System assembly, maintenance, troubleshooting, and optimization of physical IT infrastructure.</p>
+                <div class="skill-bar"><div class="progress" style="width: 90%;"></div></div>
+            </div>
+            
+            <div class="skill-card hidden">
+                <div class="skill-icon"><i class="fa-solid fa-route"></i></div>
+                <h3>Networking</h3>
+                <p>LAN/WAN setup, firewalls, subnets, VPNs, and network security implementations.</p>
+                <div class="skill-bar"><div class="progress" style="width: 85%;"></div></div>
+            </div>
+
+            <div class="skill-card hidden">
+                <div class="skill-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h3>CCNA</h3>
+                <p>Cisco routing and switching, OSPF, EIGRP, VLANs, and network protocols.</p>
+                <div class="skill-bar"><div class="progress" style="width: 80%;"></div></div>
+            </div>
+
+            <div class="skill-card hidden">
+                <div class="skill-icon"><i class="fa-solid fa-cloud"></i></div>
+                <h3>Cloud Computing</h3>
+                <p>Virtualization, containerization, cloud storage, and distributed system architectures.</p>
+                <div class="skill-bar"><div class="progress" style="width: 85%;"></div></div>
+            </div>
+
+            <div class="skill-card hidden highlight">
+                <div class="skill-icon"><i class="fa-brands fa-aws"></i></div>
+                <h3>Amazon Web Services</h3>
+                <p>EC2, S3, VPC, IAM, RDS. Designing fault-tolerant, highly available systems.</p>
+                <div class="skill-bar"><div class="progress aws-progress" style="width: 90%;"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+        <div class="section-header">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="contact-container hidden">
+            <div class="contact-info">
+                <h3>Let's build something amazing together</h3>
+                <p class="type-once" data-text="Whether you need to optimize your local network or migrate an entire infrastructure to the AWS cloud, I'm ready to help."></p>
+                <div class="contact-methods">
+                    <div class="method">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>techguruayan87@gmail.com</span>
+                    </div>
+                    <div class="method">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+91 8200781486</span>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-content">
+                    <div class="input-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="input-group">
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary-btn submit-btn">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+                <div class="success-message" id="successMessage" style="display: none;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <h4>Transmission Successful</h4>
+                    <p>Your message has been securely routed to my network. I will respond to your query shortly.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Ayan. Designed with <i class="fa-solid fa-heart" style="color: #e25555;"></i> for the future.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
