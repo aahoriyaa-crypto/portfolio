@@ -342,42 +342,17 @@ const successMessage = document.getElementById('successMessage');
 
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+        // Native submission directly to hidden iframe bypassing CORS restrictions!
         
         const submitBtn = this.querySelector('.submit-btn');
         submitBtn.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
         submitBtn.disabled = true;
         
-        const nameVal = this.querySelector('input[name="name"]').value;
-        const emailVal = this.querySelector('input[name="email"]').value;
-        const messageVal = this.querySelector('textarea[name="message"]').value;
-        
-        fetch('https://formsubmit.co/ajax/techguruayan87@gmail.com', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                name: nameVal,
-                email: emailVal,
-                message: messageVal
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success === "true" || data.success === true) {
-                formContent.style.display = 'none';
-                successMessage.style.display = 'block';
-                this.reset();
-            } else {
-                submitBtn.innerHTML = 'Error! Try Again <i class="fa-solid fa-triangle-exclamation"></i>';
-                submitBtn.disabled = false;
-            }
-        })
-        .catch(error => {
-            submitBtn.innerHTML = 'Error! Try Again <i class="fa-solid fa-triangle-exclamation"></i>';
-            submitBtn.disabled = false;
-        });
+        // Wait 1.5 seconds for native submission to proceed, then display success animation
+        setTimeout(() => {
+            formContent.style.display = 'none';
+            successMessage.style.display = 'block';
+            this.reset();
+        }, 1500);
     });
 }

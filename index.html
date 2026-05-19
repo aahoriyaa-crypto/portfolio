@@ -162,7 +162,10 @@
                     <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
                 </div>
             </div>
-            <form class="contact-form" id="contactForm">
+            <!-- Hidden iframe to handle native submission without page reload (CORS-safe) -->
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+            
+            <form class="contact-form" id="contactForm" action="https://formsubmit.co/techguruayan87@gmail.com" method="POST" target="hidden_iframe">
                 <div class="form-content">
                     <div class="input-group">
                         <input type="text" name="name" placeholder="Your Name" required>
