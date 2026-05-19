@@ -106,9 +106,61 @@ animateParticles();
 
 
 // Custom Smooth Scrolling (Slow & Relaxed)
+let isAutoScrolling = false;
+let autoScrollRAF = null;
+
+function stopAutoScroll() {
+    isAutoScrolling = false;
+    if (autoScrollRAF) cancelAnimationFrame(autoScrollRAF);
+    window.removeEventListener('wheel', stopAutoScroll);
+    window.removeEventListener('touchstart', stopAutoScroll);
+    window.removeEventListener('mousedown', stopAutoScroll);
+}
+
+function startAutoScrollSkills(skillsSection) {
+    if (isAutoScrolling) stopAutoScroll();
+    
+    // Only auto-scroll on smaller screens (phones/tablets) where content stacks
+    if (window.innerWidth > 992) return;
+
+    window.addEventListener('wheel', stopAutoScroll, {passive: true});
+    window.addEventListener('touchstart', stopAutoScroll, {passive: true});
+    window.addEventListener('mousedown', stopAutoScroll, {passive: true});
+
+    setTimeout(() => {
+        isAutoScrolling = true;
+        let lastTime = null;
+        const pixelsPerSecond = 40; // Slow, readable speed
+
+        function autoScrollStep(timestamp) {
+            if (!isAutoScrolling) return;
+            if (!lastTime) lastTime = timestamp;
+            const delta = timestamp - lastTime;
+            lastTime = timestamp;
+            
+            const move = (delta / 1000) * pixelsPerSecond;
+            const skillsBottom = skillsSection.getBoundingClientRect().bottom + window.pageYOffset;
+            const currentScrollBottom = window.pageYOffset + window.innerHeight;
+
+            // Continue scrolling if the bottom of the section is not fully visible yet
+            if (currentScrollBottom < skillsBottom + 30) {
+                window.scrollBy(0, move);
+                autoScrollRAF = window.requestAnimationFrame(autoScrollStep);
+            } else {
+                stopAutoScroll();
+            }
+        }
+        autoScrollRAF = window.requestAnimationFrame(autoScrollStep);
+    }, 1500); // Wait 1.5s after smooth scroll finishes before starting to auto-scroll
+}
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
+        
+        // Stop any ongoing auto-scroll if user clicks another link
+        stopAutoScroll();
+
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
         
@@ -129,7 +181,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     : 1 - Math.pow(-2 * progress / duration + 2, 3) / 2;
                 
                 window.scrollTo(0, startPosition + distance * ease);
-                if (progress < duration) window.requestAnimationFrame(step);
+                if (progress < duration) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    // Start auto-scroll if the target is the skills section
+                    if (targetId === '#skills') {
+                        startAutoScrollSkills(targetElement);
+                    }
+                }
             }
             window.requestAnimationFrame(step);
         }
