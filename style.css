@@ -379,48 +379,89 @@ a {
 /* ------------------------
    About Section
 ------------------------ */
-.about-content {
+.about-container {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: stretch;
+}
+
+.about-text-content {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    justify-content: center;
 }
 
-.about-text p {
+.about-text-content p {
     font-size: 1.25rem;
     color: var(--text-secondary);
-    margin-bottom: 20px;
-    max-width: 800px;
+    line-height: 1.8;
 }
 
-.about-text strong {
+.education-card {
+    position: relative;
+    padding: 35px 30px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 210, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 210, 255, 0.1);
+}
+
+.education-badge {
+    color: var(--accent-cyan);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.institute-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
     color: var(--text-primary);
 }
 
-.stats {
-    display: flex;
-    gap: 40px;
-    margin-top: 40px;
-}
-
-.stat-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    font-family: var(--font-heading);
-    color: var(--accent-cyan);
-    line-height: 1;
-}
-
-.stat-label {
-    font-size: 0.9rem;
+.duration {
+    font-size: 1.05rem;
     color: var(--text-secondary);
-    margin-top: 5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.duration i {
+    color: var(--accent-purple);
+}
+
+.edu-contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+}
+
+.edu-contact i {
+    color: var(--accent-cyan);
+}
+
+.edu-contact a:hover {
+    color: var(--accent-cyan);
+    text-decoration: underline;
 }
 
 /* ------------------------
@@ -471,14 +512,36 @@ a {
 }
 
 .skill-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     margin-bottom: 15px;
 }
 
-.skill-card p {
+.skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 25px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.skill-list li {
+    font-size: 0.95rem;
     color: var(--text-secondary);
-    font-size: 1.05rem;
-    margin-bottom: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+}
+
+.skill-list li i {
+    color: var(--accent-cyan);
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.skill-card.highlight .skill-list li i {
+    color: var(--accent-aws);
 }
 
 .skill-bar {
@@ -487,6 +550,7 @@ a {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     overflow: hidden;
+    margin-top: auto; /* Ensures bar stays at bottom of card */
 }
 
 .progress {
@@ -717,6 +781,11 @@ footer {
    Responsive Design
 ------------------------ */
 @media (max-width: 1024px) {
+    .about-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
     .title {
         font-size: 4rem;
     }

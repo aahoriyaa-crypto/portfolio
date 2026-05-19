@@ -70,23 +70,18 @@
             <h2 class="section-title">About Me</h2>
             <div class="underline"></div>
         </div>
-        <div class="about-content">
-            <div class="about-text hidden">
-                <p class="type-once" data-text="I am an enthusiastic IT professional with a deep passion for technology. My expertise spans across the physical layer of hardware to complex networking protocols and modern cloud architectures."></p>
-                <p class="type-once" data-text="With a strong foundation in CCNA principles, I specialize in designing, configuring, and troubleshooting networks. In the modern era, my focus extends to the cloud, specifically architecting and managing scalable solutions on AWS."></p>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-number">Hardware</span>
-                        <span class="stat-label">Diagnostics & Setup</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">CCNA</span>
-                        <span class="stat-label">Routing & Switching</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">AWS</span>
-                        <span class="stat-label">Cloud Architect</span>
-                    </div>
+        <div class="about-container hidden">
+            <div class="about-text-content">
+                <p class="type-once" data-text="I am a Tech Student with a deep interest in Networking, Cyber Security, and Cloud Computing. Currently training at IANT Palanpur, I have spent the last year mastering core IT infrastructures, from hardware troubleshooting to advanced routing and cloud architecture."></p>
+            </div>
+            
+            <div class="education-card glass-card">
+                <div class="education-badge">🎓 Education & Training</div>
+                <h3 class="institute-title">IANT Palanpur</h3>
+                <p class="duration"><i class="fa-solid fa-calendar-days"></i> 1-Year Intensive Technical Program</p>
+                <div class="edu-contact">
+                    <i class="fa-solid fa-envelope"></i>
+                    <a href="mailto:techguruayan87@gmail.com">techguruayan87@gmail.com</a>
                 </div>
             </div>
         </div>
@@ -99,39 +94,61 @@
             <div class="underline"></div>
         </div>
         <div class="skills-grid">
-            <div class="skill-card hidden">
-                <div class="skill-icon"><i class="fa-solid fa-microchip"></i></div>
-                <h3>Hardware</h3>
-                <p>System assembly, maintenance, troubleshooting, and optimization of physical IT infrastructure.</p>
-                <div class="skill-bar"><div class="progress" style="width: 90%;"></div></div>
+            <!-- AWS Skill Card -->
+            <div class="skill-card hidden highlight">
+                <div class="skill-icon"><i class="fa-brands fa-aws"></i></div>
+                <h3>Cloud Computing (AWS)</h3>
+                <ul class="skill-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Scope:</strong> Mastered 20+ AWS Services with hands-on labs.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Experience:</strong> Deployed multiple practical cloud projects and architectures.</span></li>
+                </ul>
+                <div class="skill-bar"><div class="progress aws-progress" style="width: 90%;"></div></div>
             </div>
             
+            <!-- CCNA Skill Card -->
             <div class="skill-card hidden">
                 <div class="skill-icon"><i class="fa-solid fa-route"></i></div>
-                <h3>Networking</h3>
-                <p>LAN/WAN setup, firewalls, subnets, VPNs, and network security implementations.</p>
+                <h3>Cisco Certified Network Associate (CCNA)</h3>
+                <ul class="skill-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Routing:</strong> Static, Default, & Dynamic (RIP, OSPF, EIGRP).</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Switching & VLANs:</strong> Core switching, VLAN, and Inter-VLAN routing.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Security & Translation:</strong> NAT (Static, Dynamic, PAT) and ACLs.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Next-Gen IP:</strong> Hands-on practical deployment of IPv6.</span></li>
+                </ul>
                 <div class="skill-bar"><div class="progress" style="width: 85%;"></div></div>
             </div>
 
+            <!-- Network+ Skill Card -->
             <div class="skill-card hidden">
-                <div class="skill-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <h3>CCNA</h3>
-                <p>Cisco routing and switching, OSPF, EIGRP, VLANs, and network protocols.</p>
+                <div class="skill-icon"><i class="fa-solid fa-network-wired"></i></div>
+                <h3>CompTIA Network+ (N+)</h3>
+                <ul class="skill-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Infrastructure:</strong> Deep understanding of Network Devices, Types, & OSI Model.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Addressing & Media:</strong> IPv4/IPv6 addressing, Transmission, and Cabling.</span></li>
+                </ul>
                 <div class="skill-bar"><div class="progress" style="width: 80%;"></div></div>
             </div>
 
+            <!-- A+ Skill Card -->
             <div class="skill-card hidden">
-                <div class="skill-icon"><i class="fa-solid fa-cloud"></i></div>
-                <h3>Cloud Computing</h3>
-                <p>Virtualization, containerization, cloud storage, and distributed system architectures.</p>
-                <div class="skill-bar"><div class="progress" style="width: 85%;"></div></div>
+                <div class="skill-icon"><i class="fa-solid fa-microchip"></i></div>
+                <h3>CompTIA A+ (Hardware & Support)</h3>
+                <ul class="skill-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Troubleshooting:</strong> System diagnostics & practical enterprise problem-solving.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>OS & Hardware:</strong> Operating System installation & component management.</span></li>
+                </ul>
+                <div class="skill-bar"><div class="progress" style="width: 90%;"></div></div>
             </div>
 
-            <div class="skill-card hidden highlight">
-                <div class="skill-icon"><i class="fa-brands fa-aws"></i></div>
-                <h3>Amazon Web Services</h3>
-                <p>EC2, S3, VPC, IAM, RDS. Designing fault-tolerant, highly available systems.</p>
-                <div class="skill-bar"><div class="progress aws-progress" style="width: 90%;"></div></div>
+            <!-- Security & Office 365 Skill Card -->
+            <div class="skill-card hidden">
+                <div class="skill-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Cyber Security & MS Office 365</h3>
+                <ul class="skill-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Security:</strong> Foundational training in cyber threats & security principles.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span><strong>Productivity:</strong> Advanced workflows using Microsoft Office 365 suite.</span></li>
+                </ul>
+                <div class="skill-bar"><div class="progress" style="width: 85%;"></div></div>
             </div>
         </div>
     </section>
