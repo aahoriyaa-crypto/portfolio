@@ -108,29 +108,33 @@ animateParticles();
 // Custom Smooth Scrolling (Slow & Relaxed)
 let isAutoScrolling = false;
 let autoScrollRAF = null;
+let autoScrollTimeout = null;
+
+const autoScrollStopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown', 'keydown', 'pointerdown'];
 
 function stopAutoScroll() {
     isAutoScrolling = false;
     if (autoScrollRAF) cancelAnimationFrame(autoScrollRAF);
-    window.removeEventListener('wheel', stopAutoScroll);
-    window.removeEventListener('touchstart', stopAutoScroll);
-    window.removeEventListener('mousedown', stopAutoScroll);
+    if (autoScrollTimeout) {
+        clearTimeout(autoScrollTimeout);
+        autoScrollTimeout = null;
+    }
+    autoScrollStopEvents.forEach(evt => window.removeEventListener(evt, stopAutoScroll));
 }
 
 function startAutoScrollSkills(skillsSection) {
-    if (isAutoScrolling) stopAutoScroll();
+    stopAutoScroll();
     
     // Only auto-scroll on smaller screens (phones/tablets) where content stacks
     if (window.innerWidth > 992) return;
 
-    window.addEventListener('wheel', stopAutoScroll, {passive: true});
-    window.addEventListener('touchstart', stopAutoScroll, {passive: true});
-    window.addEventListener('mousedown', stopAutoScroll, {passive: true});
+    // Attach interaction listeners immediately so we catch early user touches
+    autoScrollStopEvents.forEach(evt => window.addEventListener(evt, stopAutoScroll, {passive: true}));
 
-    setTimeout(() => {
+    autoScrollTimeout = setTimeout(() => {
         isAutoScrolling = true;
         let lastTime = null;
-        const pixelsPerSecond = 40; // Slow, readable speed
+        const pixelsPerSecond = 30; // Very slow, gentle, highly readable speed on phone screens
 
         function autoScrollStep(timestamp) {
             if (!isAutoScrolling) return;
@@ -154,12 +158,23 @@ function startAutoScrollSkills(skillsSection) {
     }, 1500); // Wait 1.5s after smooth scroll finishes before starting to auto-scroll
 }
 
+let isCustomScrolling = false;
+let customScrollRAF = null;
+const customScrollStopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown'];
+
+function stopCustomScroll() {
+    isCustomScrolling = false;
+    if (customScrollRAF) cancelAnimationFrame(customScrollRAF);
+    customScrollStopEvents.forEach(evt => window.removeEventListener(evt, stopCustomScroll));
+}
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         
-        // Stop any ongoing auto-scroll if user clicks another link
+        // Stop any ongoing auto-scroll or custom scroll
         stopAutoScroll();
+        stopCustomScroll();
 
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
@@ -169,10 +184,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
             const startPosition = window.pageYOffset;
             const distance = targetPosition - startPosition;
-            const duration = 1200; // 1.2 seconds for a very relaxed scroll
+            
+            // On mobile, if navigating to skills, make it slower and more readable
+            const isMobile = window.innerWidth <= 768;
+            let duration = 1200; // 1.2 seconds default for desktop
+            if (isMobile && targetId === '#skills') {
+                duration = 2800; // Very slow, elegant scroll (2.8 seconds) on mobile so it is readable
+            }
+            
             let start = null;
+            isCustomScrolling = true;
+
+            // Enable cancelable scroll on any user interaction
+            customScrollStopEvents.forEach(evt => window.addEventListener(evt, stopCustomScroll, {passive: true}));
 
             function step(timestamp) {
+                if (!isCustomScrolling) {
+                    stopCustomScroll();
+                    return;
+                }
                 if (!start) start = timestamp;
                 const progress = timestamp - start;
                 // easeInOutCubic
@@ -182,15 +212,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 
                 window.scrollTo(0, startPosition + distance * ease);
                 if (progress < duration) {
-                    window.requestAnimationFrame(step);
+                    customScrollRAF = window.requestAnimationFrame(step);
                 } else {
+                    stopCustomScroll();
                     // Start auto-scroll if the target is the skills section
                     if (targetId === '#skills') {
                         startAutoScrollSkills(targetElement);
                     }
                 }
             }
-            window.requestAnimationFrame(step);
+            customScrollRAF = window.requestAnimationFrame(step);
         }
     });
 });
