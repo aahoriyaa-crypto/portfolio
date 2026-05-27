@@ -110,8 +110,6 @@ let isAutoScrolling = false;
 let autoScrollRAF = null;
 let autoScrollTimeout = null;
 
-const autoScrollStopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown', 'keydown', 'pointerdown'];
-
 function stopAutoScroll() {
     isAutoScrolling = false;
     if (autoScrollRAF) cancelAnimationFrame(autoScrollRAF);
@@ -119,7 +117,6 @@ function stopAutoScroll() {
         clearTimeout(autoScrollTimeout);
         autoScrollTimeout = null;
     }
-    autoScrollStopEvents.forEach(evt => window.removeEventListener(evt, stopAutoScroll));
 }
 
 function startAutoScrollSkills(skillsSection) {
@@ -128,13 +125,10 @@ function startAutoScrollSkills(skillsSection) {
     // Only auto-scroll on smaller screens (phones/tablets) where content stacks
     if (window.innerWidth > 992) return;
 
-    // Attach interaction listeners immediately so we catch early user touches
-    autoScrollStopEvents.forEach(evt => window.addEventListener(evt, stopAutoScroll, {passive: true}));
-
     autoScrollTimeout = setTimeout(() => {
         isAutoScrolling = true;
         let lastTime = null;
-        const pixelsPerSecond = 30; // Very slow, gentle, highly readable speed on phone screens
+        const pixelsPerSecond = 50; // Very slow, gentle, highly readable speed on phone screens
 
         function autoScrollStep(timestamp) {
             if (!isAutoScrolling) return;
