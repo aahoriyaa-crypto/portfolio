@@ -495,6 +495,8 @@ if (contactForm) {
             width: '0',
             videoId: 'R54GtmDQ9mA', // Golden Brown x Love Story by Clavier (Instrumental)
             playerVars: {
+                'autoplay': 1,
+                'mute': 0,
                 'playsinline': 1,
                 'loop': 1,
                 'playlist': 'R54GtmDQ9mA', // Loop requires playlist to repeat same video
@@ -515,9 +517,14 @@ if (contactForm) {
         // Perfect background music volume: not too loud, not too soft (20%)
         event.target.setVolume(20);
         
-        // Listen to first click or touch to trigger autoplay (browser compatibility)
-        document.addEventListener('click', startAudioOnInteraction, { once: true });
-        document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
+        // Attempt native autoplay immediately (if browser settings allow it)
+        event.target.playVideo();
+        
+        // Setup immediate fallback on ANY user action (click, scroll, key, touch, etc.)
+        const interactions = ['click', 'touchstart', 'keydown', 'mousedown', 'wheel'];
+        interactions.forEach(evt => {
+            document.addEventListener(evt, startAudioOnInteraction, { once: true, passive: true });
+        });
     }
 
     function startAudioOnInteraction() {
