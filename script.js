@@ -478,17 +478,11 @@ if (contactForm) {
     `;
     document.head.appendChild(style);
 
-    // Load the YouTube IFrame Player API
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
     let player;
     let isAudioPlaying = false;
     let audioStarted = false;
 
-    // Define global callback since YouTube API requires it
+    // 1. Define global callback FIRST to avoid any race conditions
     window.onYouTubeIframeAPIReady = function() {
         player = new YT.Player('yt-player', {
             height: '0',
@@ -513,6 +507,12 @@ if (contactForm) {
         });
     };
 
+    // 2. Load the YouTube IFrame Player API AFTER defining the callback
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
     function onPlayerReady(event) {
         // Perfect background music volume: not too loud, not too soft (20%)
         event.target.setVolume(20);
@@ -528,17 +528,21 @@ if (contactForm) {
     }
 
     function startAudioOnInteraction() {
-        if (player && !audioStarted) {
-            player.playVideo();
-            audioStarted = true;
-            isAudioPlaying = true;
-            updateMusicToggleButton(true);
+        if (player && typeof player.getPlayerState === 'function') {
+            const state = player.getPlayerState();
+            if (state !== 1 && !audioStarted) { // 1 = playing
+                player.playVideo();
+                audioStarted = true;
+                isAudioPlaying = true;
+                updateMusicToggleButton(true);
+            }
         }
     }
 
     function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.PLAYING) {
+        if (event.data === 1) { // 1 = playing
             isAudioPlaying = true;
+            audioStarted = true;
             updateMusicToggleButton(true);
         } else {
             isAudioPlaying = false;
@@ -548,9 +552,10 @@ if (contactForm) {
 
     musicBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!player) return;
+        if (!player || typeof player.getPlayerState !== 'function') return;
         
-        if (isAudioPlaying) {
+        const state = player.getPlayerState();
+        if (state === 1) { // 1 = playing
             player.pauseVideo();
         } else {
             player.playVideo();
