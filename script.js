@@ -109,6 +109,7 @@ animateParticles();
 let isAutoScrolling = false;
 let autoScrollRAF = null;
 let autoScrollTimeout = null;
+const customScrollStopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown'];
 
 function stopAutoScroll() {
     isAutoScrolling = false;
@@ -117,6 +118,7 @@ function stopAutoScroll() {
         clearTimeout(autoScrollTimeout);
         autoScrollTimeout = null;
     }
+    customScrollStopEvents.forEach(evt => window.removeEventListener(evt, stopAutoScroll));
 }
 
 function startAutoScrollSkills(skillsSection) {
@@ -125,13 +127,19 @@ function startAutoScrollSkills(skillsSection) {
     // Only auto-scroll on smaller screens (phones/tablets) where content stacks
     if (window.innerWidth > 992) return;
 
+    // Enable cancelable auto-scroll on any user interaction
+    customScrollStopEvents.forEach(evt => window.addEventListener(evt, stopAutoScroll, {passive: true}));
+
     autoScrollTimeout = setTimeout(() => {
         isAutoScrolling = true;
         let lastTime = null;
         const pixelsPerSecond = 50; // Very slow, gentle, highly readable speed on phone screens
 
         function autoScrollStep(timestamp) {
-            if (!isAutoScrolling) return;
+            if (!isAutoScrolling) {
+                stopAutoScroll();
+                return;
+            }
             if (!lastTime) lastTime = timestamp;
             const delta = timestamp - lastTime;
             lastTime = timestamp;
@@ -154,7 +162,6 @@ function startAutoScrollSkills(skillsSection) {
 
 let isCustomScrolling = false;
 let customScrollRAF = null;
-const customScrollStopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown'];
 
 function stopCustomScroll() {
     isCustomScrolling = false;
