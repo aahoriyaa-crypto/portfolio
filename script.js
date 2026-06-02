@@ -157,7 +157,7 @@ function startAutoScrollSkills(skillsSection) {
             }
         }
         autoScrollRAF = window.requestAnimationFrame(autoScrollStep);
-    }, 1500); // Wait 1.5s after smooth scroll finishes before starting to auto-scroll
+    }, 800); // Snappy 800ms wait after smooth scroll finishes before starting to auto-scroll
 }
 
 let isCustomScrolling = false;
@@ -186,11 +186,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const startPosition = window.pageYOffset;
             const distance = targetPosition - startPosition;
             
-            // On mobile, if navigating to skills, make it slower and more readable
+            // Snappy and elegant scroll durations for a premium, high-performance feel
             const isMobile = window.innerWidth <= 768;
-            let duration = 1200; // 1.2 seconds default for desktop
+            let duration = 500; // 0.5 seconds default for desktop (fast and modern)
             if (isMobile && targetId === '#skills') {
-                duration = 2800; // Very slow, elegant scroll (2.8 seconds) on mobile so it is readable
+                duration = 800; // Snappy 0.8 seconds on mobile
             }
             
             let start = null;
