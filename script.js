@@ -111,6 +111,34 @@ let autoScrollRAF = null;
 let autoScrollTimeout = null;
 const customScrollStopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown'];
 
+let touchstartY = 0;
+
+function handleTouchStart(e) {
+    touchstartY = e.touches[0].clientY;
+}
+
+function handleTouchMove(e) {
+    if (!isAutoScrolling) return;
+    const currentY = e.touches[0].clientY;
+    // If user dragged finger down (meaning they scrolled the page UP, going back)
+    if (currentY > touchstartY + 10) {
+        stopAutoScroll();
+    }
+}
+
+function handleWheel(e) {
+    if (!isAutoScrolling) return;
+    // deltaY < 0 means wheel scrolled up (page scrolls up, going back)
+    if (e.deltaY < 0) {
+        stopAutoScroll();
+    }
+}
+
+function handleMouseDown() {
+    // If they click, we stop auto scroll to let them interact
+    stopAutoScroll();
+}
+
 function stopAutoScroll() {
     isAutoScrolling = false;
     if (autoScrollRAF) cancelAnimationFrame(autoScrollRAF);
@@ -118,7 +146,10 @@ function stopAutoScroll() {
         clearTimeout(autoScrollTimeout);
         autoScrollTimeout = null;
     }
-    customScrollStopEvents.forEach(evt => window.removeEventListener(evt, stopAutoScroll));
+    window.removeEventListener('wheel', handleWheel);
+    window.removeEventListener('touchstart', handleTouchStart);
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('mousedown', handleMouseDown);
 }
 
 function startAutoScrollSkills(skillsSection) {
@@ -127,8 +158,11 @@ function startAutoScrollSkills(skillsSection) {
     // Only auto-scroll on smaller screens (phones/tablets) where content stacks
     if (window.innerWidth > 992) return;
 
-    // Enable cancelable auto-scroll on any user interaction
-    customScrollStopEvents.forEach(evt => window.addEventListener(evt, stopAutoScroll, {passive: true}));
+    // Register event listeners to selectively stop auto-scroll (e.g. only on scroll UP)
+    window.addEventListener('wheel', handleWheel, {passive: true});
+    window.addEventListener('touchstart', handleTouchStart, {passive: true});
+    window.addEventListener('touchmove', handleTouchMove, {passive: true});
+    window.addEventListener('mousedown', handleMouseDown, {passive: true});
 
     autoScrollTimeout = setTimeout(() => {
         isAutoScrolling = true;
@@ -388,3 +422,142 @@ if (contactForm) {
         }, 1500);
     });
 }
+
+// ----------------------------------------------------
+// Ambient Background Music Player (YouTube API Wrapper)
+// ----------------------------------------------------
+(function() {
+    // Create a hidden container for the YouTube player dynamically
+    const ytContainer = document.createElement('div');
+    ytContainer.id = 'yt-player';
+    ytContainer.style.cssText = 'position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;';
+    document.body.appendChild(ytContainer);
+
+    // Create and style the floating music toggle button dynamically
+    const musicBtn = document.createElement('button');
+    musicBtn.className = 'music-toggle-btn';
+    musicBtn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+    musicBtn.title = "Toggle Background Music";
+    document.body.appendChild(musicBtn);
+
+    // Append music styles dynamically to keep script self-contained and clean
+    const style = document.createElement('style');
+    style.textContent = `
+        .music-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: #00d2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 10px 25px rgba(0, 240, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .music-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: #00d2ff;
+            box-shadow: 0 15px 30px rgba(0, 240, 255, 0.35);
+        }
+        .music-toggle-btn.playing i {
+            animation: spinMusic 3s linear infinite;
+        }
+        @keyframes spinMusic {
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Load the YouTube IFrame Player API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let player;
+    let isAudioPlaying = false;
+    let audioStarted = false;
+
+    // Define global callback since YouTube API requires it
+    window.onYouTubeIframeAPIReady = function() {
+        player = new YT.Player('yt-player', {
+            height: '0',
+            width: '0',
+            videoId: 'R54GtmDQ9mA', // Golden Brown x Love Story by Clavier (Instrumental)
+            playerVars: {
+                'playsinline': 1,
+                'loop': 1,
+                'playlist': 'R54GtmDQ9mA', // Loop requires playlist to repeat same video
+                'controls': 0,
+                'disablekb': 1,
+                'fs': 0,
+                'modestbranding': 1,
+                'rel': 0
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    };
+
+    function onPlayerReady(event) {
+        // Perfect background music volume: not too loud, not too soft (20%)
+        event.target.setVolume(20);
+        
+        // Listen to first click or touch to trigger autoplay (browser compatibility)
+        document.addEventListener('click', startAudioOnInteraction, { once: true });
+        document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
+    }
+
+    function startAudioOnInteraction() {
+        if (player && !audioStarted) {
+            player.playVideo();
+            audioStarted = true;
+            isAudioPlaying = true;
+            updateMusicToggleButton(true);
+        }
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.PLAYING) {
+            isAudioPlaying = true;
+            updateMusicToggleButton(true);
+        } else {
+            isAudioPlaying = false;
+            updateMusicToggleButton(false);
+        }
+    }
+
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!player) return;
+        
+        if (isAudioPlaying) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
+            audioStarted = true;
+        }
+    });
+
+    function updateMusicToggleButton(isPlaying) {
+        if (isPlaying) {
+            musicBtn.classList.add('playing');
+            musicBtn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+        } else {
+            musicBtn.classList.remove('playing');
+            musicBtn.innerHTML = '<i class="fa-solid fa-compact-disc-slash" style="opacity: 0.6;"></i>';
+        }
+    }
+})();
